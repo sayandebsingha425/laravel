@@ -1,0 +1,139 @@
+composer create-project laravel/laravel projectname
+cd project name
+php artisan serve
+php artisan make:controller controllername
+php artisan make:middleware middlename
+
+Yeilding-
+
+@yield('content')-in navbar page
+
+{@extends('navbar')
+@section('content')
+<h1> you are in aboutus page </h1>
+@endsection('content')}- in the rest of page
+
+Passing data, script, headers, cookies, json, redirect-
+
+Route::get('/about', function () {
+	$see = ["yes","no","maybe"];
+	$gee = ["bee","hdu","hdb"];
+    return view('about',["nee"=>$see,"wee"=>$gee]);
+});
+
+Route::get('/', function () {
+	$product = "yes";
+	$alert = "<script> alert('You have sucessfully entered into news page');</script>";
+    return view('home',["tee"=> $product,"a"=>$alert]);
+});
+Route::get('/sour', function () {
+    return response("Hi this is header",202)
+    ->withHeaders(['Content-Type'=>'text/css','xheader-new'=>'deb','abc'=>'burn'])
+    ->cookie('sourav','yes',60);
+});
+Route::get('/burn', function () {
+    return response()
+    ->json(['name'=>'sourav','class'=>'BTech']);
+});
+Route::get('/search', function () {
+    return redirect('https://www.google.com');
+});
+
+Passing value Url
+
+Route::get('/new','controlurself@sub');-web
+ public function sub()
+    {
+        return view('about',['idd'=>request('id')]);
+    }
+
+Global Variable
+
+use Illuminate\Support\Facades\View;
+public function boot()
+    {
+        view::share('variable','sourav');
+        Schema::defaultStringLength(191);
+    }
+
+Database
+
+{use Illuminate\Support\Facades\Schema;
+boot function-Schema::defaultStringLength(191);}-appserviceprovider
+php artisan migrate
+drop all in phpmyadmin or php artisan migrate:rollback
+php artisan make:model modelname -m
+(change in migration file in sublime)
+php artisan migrate
+php artisan tinker
+$p =new App\modelname
+$p -> name="Sayan"
+$p->save();
+App\modelname::all();
+App\modelname::first();
+App\modelname::latest()->first();
+App\modelname::first()->id;
+App\modelname::first()->name;
+App\modelname::all()[0];
+App\modelname::all()[1];
+App\modelname::all()[0]->name;
+App\modelname::all()->map->name;
+schema::drop("tablename);
+
+now for downloading data
+make controller- php artisan make:controller cname --resource
+use App\modelname-inside controller
+return modelname::all()-index function
+
+web.php
+Route::resource('ss','cname');
+
+Middleware
+
+{ public function handle($request, Closure $next , $role)
+    {
+         if($role=="admin"){
+            return redirect('navbar');
+        }
+        return $next($request);
+    }
+}-middlewre page
+ 
+'role' => \App\Http\Middleware\yesmiddle::class - kernel
+{
+Route::get('/user','yescontroller@role')->middleware('role:admin');
+Route::get('/navbar','yescontroller@did'); 
+} - web
+{
+public function role()
+    {
+    	$add="<h1>You are in admin page</h1>";
+    	return view('navbar',["adds"=>$add]);
+    }
+    public function did()
+    {
+    	$add="<h1>You are in achha page</h1>";
+    	return view('navbar',["adds"=>$add]); 
+    }
+}-controller
+
+
+
+php artisan route:list
+php artisan make:controller controllername -r    this is for resourses
+
+php artisan make:controller controllername -r -m modelname 
+Route::resource('employee',empcontroller');- in web.php
+value="{{$emp->name}}'
+
+public function edit($id)
+{
+$emp= tablename::find($id);
+return view('edit',compact('emp'));
+}
+
+http://127.0.0.1:8000/employee/3/edit -edit
+http://127.0.0.1:8000/employee/3   -update
+
+
+https://www.studentstutorial.com/laravel/delete-data-laravel
